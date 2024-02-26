@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: stamford-center
+  labels:
+    app: center-be
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: center-be
+  template:
+    metadata:
+      labels:
+        app: center-be
+    spec:
+      containers:
+        - name: stamfordcenter-backend
+          image: ghcr.io/stamford-syntax-club/stamfordcenter-backend:8400c90041e45a4d03a64219306b7e7613352c5e
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  namespace: stamford-center
+spec:
+  selector:
+    app: center-be
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

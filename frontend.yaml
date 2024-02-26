@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: stamford-center
+  labels:
+    app: center-fe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: center-fe
+  template:
+    metadata:
+      labels:
+        app: center-fe
+    spec:
+      containers:
+        - name: stamfordcenter-frontend
+          image: ghcr.io/stamford-syntax-club/stamfordcenter-frontend:af4e77b4252ca65e436023a8fa4c7ef4bd7c07ae
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: stamford-center
+spec:
+  selector:
+    app: center-fe
+  ports:
+    - protocol: TCP
+      port: 3000
